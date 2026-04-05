@@ -1,35 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>공모전 크롤러</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>최준명 공모전 크롤러</title>
     <style>
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f4f4f4; }
-        .status-ing { color: green; font-weight: bold; }
+        body { font-family: 'Malgun Gothic', sans-serif; padding: 20px; background-color: #f4f7f6; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 3px solid #00d2d3; display: block; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #eee; padding: 12px; text-align: left; }
+        th { background-color: #00d2d3; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .status-ing { color: #27ae60; font-weight: bold; }
     </style>
 </head>
 <body>
-    <h1>최신 공모전 목록 (위비티)</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>공모전명</th>
-                <th>주최사</th>
-                <th>상태</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for contest in contests %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ contest.title }}</td>
-                <td>{{ contest.host }}</td>
-                <td class="status-ing">{{ contest.status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h1>🚀 최신 공모전 목록 (위비티 연동)</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>공모전명</th>
+                    <th>주최사</th>
+                    <th>상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contest in contests %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ contest.title }}</td>
+                    <td>{{ contest.host }}</td>
+                    <td class="status-ing">{{ contest.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
