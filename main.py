@@ -16,45 +16,48 @@ def get_wevity_data():
         soup = BeautifulSoup(response.text, 'html.parser')
         items = soup.select('ul.list li')
         
-        results = []
-        # 데이터가 없거나 차단된 경우 샘플 데이터 반환
+        # 데이터가 없으면 샘플 데이터 반환
         if not items or len(items) <= 1:
-            return [{"title": "샘플: 2026 자율주행 경진대회", "host": "산업부", "status": "접수중"}] * 10
+            return [{"title": "샘플: 2026 자율주행 경진대회", "host": "산업통상자원부", "status": "접수중"}] * 5
 
+        results = []
         for item in items[:15]:
             title_tag = item.select_one('.tit a')
             if not title_tag: continue
             results.append({
                 "title": title_tag.text.strip(),
-                "host": item.select_one('.organ').text.strip() if item.select_one('.organ') else "주최사미상",
+                "host": item.select_one('.organ').text.strip() if item.select_one('.organ') else "위비티",
                 "status": item.select_one('.status').text.strip() if item.select_one('.status') else "진행중"
             })
         return results
     except Exception:
-        return [{"title": "데이터 로딩 중", "host": "-", "status": "-"}]
+        return [{"title": "데이터 로딩 실패", "host": "-", "status": "-"}]
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
     data = get_wevity_data()
     
-    # HTML 코드를 직접 변수에 담음 (파일 에러 방지)
+    # HTML 표 내용을 문자열로 직접 생성
     rows = ""
     for idx, c in enumerate(data, 1):
         rows += f"<tr><td>{idx}</td><td>{c['title']}</td><td>{c['host']}</td><td>{c['status']}</td></tr>"
 
+    # 전체 HTML 구조
     html_content = f"""
     <html>
         <head>
-            <title>공모전 크롤러</title>
+            <meta charset="utf-8">
+            <title>최준명 공모전 크롤러</title>
             <style>
-                table {{ width: 100%; border-collapse: collapse; margin-top: 20px; }}
+                body {{ font-family: sans-serif; padding: 20px; }}
+                table {{ width: 100%; border-collapse: collapse; }}
                 th, td {{ border: 1px solid #ddd; padding: 12px; text-align: left; }}
-                th {{ background-color: #f4f4f4; }}
-                h1 {{ color: #333; }}
+                th {{ background-color: #f8f9fa; }}
+                h1 {{ color: #007bff; }}
             </style>
         </head>
         <body>
-            <h1>🚀 최신 공모전 목록 (위비티)</h1>
+            <h1>🚀 실시간 공모전 목록 (위비티)</h1>
             <table>
                 <thead>
                     <tr><th>번호</th><th>공모전명</th><th>주최사</th><th>상태</th></tr>
