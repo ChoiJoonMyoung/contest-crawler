@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>공모전 크롤러</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .status-ing { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>최신 공모전 목록 (위비티)</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>공모전명</th>
+                <th>주최사</th>
+                <th>상태</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contest in contests %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ contest.title }}</td>
+                <td>{{ contest.host }}</td>
+                <td class="status-ing">{{ contest.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
