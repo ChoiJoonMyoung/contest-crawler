@@ -17,7 +17,6 @@ def get_wevity_data():
         soup = BeautifulSoup(response.text, 'html.parser')
         contest_items = soup.select('ul.list li')
 
-        # 데이터가 없거나 차단된 경우, 사진 속의 최신 공모전 12개 출력
         if not contest_items or len(contest_items) <= 1:
             return [
                 {"title": "[곰믹스] 제8회 영상 공모전 - 백만 유튜버 상상이라도 해보자 SPECIAL", "host": "곰앤컴퍼니", "status": "진행중"},
@@ -45,14 +44,12 @@ def get_wevity_data():
             })
         return results
     except:
-        # 어떤 에러가 나도 이 리스트는 무조건 반환함
         return [{"title": "[곰믹스] 제8회 영상 공모전", "host": "곰앤컴퍼니", "status": "진행중"}] * 12
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
     data = get_wevity_data()
     
-    # HTMLResponse를 직접 사용하여 index.html 파일 없이 화면 구성
     rows = ""
     for idx, c in enumerate(data, 1):
         rows += f"<tr><td>{idx}</td><td>{c['title']}</td><td>{c['host']}</td><td style='color: green; font-weight: bold;'>{c['status']}</td></tr>"
@@ -71,7 +68,7 @@ async def read_root():
             </style>
         </head>
         <body>
-            <h1>🚀 최신 공모전 목록 (위비티)</h1>
+            <h1>최신 공모전 목록 (위비티)</h1>
             <table>
                 <thead>
                     <tr><th>번호</th><th>공모전명</th><th>주최사</th><th>상태</th></tr>
